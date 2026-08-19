@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>College Bus Driver</title>
+<script src="http://localhost:5000/socket.io/socket.io.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f3f6fb;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button.stop {
+      background: #dc2626;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🚌 College Bus Driver</h1>
+
+  <p>Bus: <strong>BUS 01</strong></p>
+
+  <button onclick="startTrip()">Start Trip</button>
+  <button onclick="sendLocation()">Send Location</button>
+  <button class="stop" onclick="stopTrip()">Stop Trip</button>
+
+  <p id="status">Connecting...</p>
+
+  <script>
+    const socket = io("http://localhost:5000");
+
+    socket.on("connect", () => {
+      document.getElementById("status").innerText =
+        "🟢 Driver connected";
+
+      console.log("Driver connected:", socket.id);
+
+      socket.emit("join-bus", "BUS 01");
+
+      console.log("Driver joined BUS 01");
+    });
+
+    socket.on("disconnect", () => {
+      document.getElementById("status").innerText =
+        "🔴 Driver disconnected";
+    });
+
+    function sendLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById("status").innerText =
+      "❌ GPS is not supported by this browser";
+    return;
+  }
+
+  document.getElementById("status").innerText =
+    "📍 Getting your location...";
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+
+      const data = {
+        busId: "BUS 01",
+        latitude: latitude,
+        longitude: longitude,
+        location: `GPS: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`
+      };
+
+      socket.emit("driver-location", data);
+
+      console.log("LIVE GPS LOCATION SENT:", data);
+
+      document.getElementById("status").innerText =
+        `📍 Location sent: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+    },
+
+    (error) => {
+      console.error("GPS error:", error);
+
+      document.getElementById("status").innerText =
+        "❌ Unable to get GPS location";
+    },
+
+    {
+      enableHighAccuracy: true,
+      timeout: 10000,
+      maximumAge: 0
+    }
+  );
+}
+
+    function startTrip() {
+      const data = {
+        busId: "BUS 01",
+        location: "Tirupati",
+        latitude: 13.6288,
+        longitude: 79.4192
+      };
+
+      socket.emit("trip-start", data);
+
+      console.log("Trip started:", data);
+
+      document.getElementById("status").innerText =
+        "🟢 Trip Started";
+    }
+
+    function stopTrip() {
+      const data = {
+        busId: "BUS 01",
+        location: "Tirupati",
+        latitude: 13.6288,
+        longitude: 79.4192
+      };
+
+      socket.emit("trip-stop", data);
+
+      console.log("Trip stopped:", data);
+
+      document.getElementById("status").innerText =
+        "🔴 Trip Completed";
+    }
+  </script>
+
+</body>
+</html>
