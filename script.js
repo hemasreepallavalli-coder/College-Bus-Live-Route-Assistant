@@ -7,7 +7,10 @@ let socket = null;
 
 const BUS_ID = "BUS 01";
 
-// Load Socket.IO client
+/* =========================
+   LOAD SOCKET.IO CLIENT
+   ========================= */
+
 const socketScript = document.createElement("script");
 
 socketScript.src = "http://localhost:5000/socket.io/socket.io.js";
@@ -26,7 +29,10 @@ socketScript.onload = () => {
     });
 
     socket.on("connect_error", (error) => {
-        console.error("Socket.IO connection error:", error.message);
+        console.error(
+            "Socket.IO connection error:",
+            error.message
+        );
     });
 
     socket.on("disconnect", () => {
@@ -99,7 +105,8 @@ function startTrip() {
     tripActive = true;
     locationIndex = 0;
 
-    document.getElementById("driverStatus").textContent = "Active";
+    document.getElementById("driverStatus").textContent =
+        "Active";
 
     document.getElementById("tripStatus").textContent =
         "Trip Started";
@@ -132,18 +139,22 @@ function startTrip() {
 
             busId: BUS_ID,
 
-            location: busLocations[locationIndex],
+            location:
+                busLocations[locationIndex],
 
-            latitude: busCoordinates[locationIndex].latitude,
+            latitude:
+                busCoordinates[locationIndex].latitude,
 
-            longitude: busCoordinates[locationIndex].longitude
-
+            longitude:
+                busCoordinates[locationIndex].longitude
         });
 
         console.log("Trip start sent to backend");
     }
 
-    // Send first location
+
+    /* Send first location */
+
     sendLocation();
 }
 
@@ -300,7 +311,6 @@ function endTrip() {
 
             longitude:
                 busCoordinates[locationIndex].longitude
-
         });
 
         console.log("Trip stop sent to backend");
@@ -311,5 +321,10 @@ function endTrip() {
 /* =========================
    AUTOMATIC BUS MOVEMENT
    ========================= */
+
+/*
+   Move the bus automatically
+   every 5 seconds.
+*/
 
 setInterval(updateLocation, 5000);
