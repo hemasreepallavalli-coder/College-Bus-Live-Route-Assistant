@@ -92,6 +92,8 @@ function App() {
       </Routes>
 
     </BrowserRouter>
+<<<<<<< HEAD
+=======
 
 import { useEffect, useState } from "react";
 import {
@@ -1662,6 +1664,7 @@ function App() {
       </main>
 
     </div>
+>>>>>>> origin/main
   );
 }
 

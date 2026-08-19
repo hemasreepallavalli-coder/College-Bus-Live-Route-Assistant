@@ -7,7 +7,14 @@ let socket = null;
 
 const BUS_ID = "BUS 01";
 
+<<<<<<< HEAD
+/* =========================
+   LOAD SOCKET.IO CLIENT
+   ========================= */
+
+=======
 // Load Socket.IO client
+>>>>>>> origin/main
 const socketScript = document.createElement("script");
 
 socketScript.src = "http://localhost:5000/socket.io/socket.io.js";
@@ -26,7 +33,14 @@ socketScript.onload = () => {
     });
 
     socket.on("connect_error", (error) => {
+<<<<<<< HEAD
+        console.error(
+            "Socket.IO connection error:",
+            error.message
+        );
+=======
         console.error("Socket.IO connection error:", error.message);
+>>>>>>> origin/main
     });
 
     socket.on("disconnect", () => {
@@ -99,7 +113,12 @@ function startTrip() {
     tripActive = true;
     locationIndex = 0;
 
+<<<<<<< HEAD
+    document.getElementById("driverStatus").textContent =
+        "Active";
+=======
     document.getElementById("driverStatus").textContent = "Active";
+>>>>>>> origin/main
 
     document.getElementById("tripStatus").textContent =
         "Trip Started";
@@ -132,18 +151,35 @@ function startTrip() {
 
             busId: BUS_ID,
 
+<<<<<<< HEAD
+            location:
+                busLocations[locationIndex],
+
+            latitude:
+                busCoordinates[locationIndex].latitude,
+
+            longitude:
+                busCoordinates[locationIndex].longitude
+=======
             location: busLocations[locationIndex],
 
             latitude: busCoordinates[locationIndex].latitude,
 
             longitude: busCoordinates[locationIndex].longitude
 
+>>>>>>> origin/main
         });
 
         console.log("Trip start sent to backend");
     }
 
+<<<<<<< HEAD
+
+    /* Send first location */
+
+=======
     // Send first location
+>>>>>>> origin/main
     sendLocation();
 }
 
@@ -300,7 +336,10 @@ function endTrip() {
 
             longitude:
                 busCoordinates[locationIndex].longitude
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/main
         });
 
         console.log("Trip stop sent to backend");
@@ -312,4 +351,12 @@ function endTrip() {
    AUTOMATIC BUS MOVEMENT
    ========================= */
 
+<<<<<<< HEAD
+/*
+   Move the bus automatically
+   every 5 seconds.
+*/
+
+=======
+>>>>>>> origin/main
 setInterval(updateLocation, 5000);

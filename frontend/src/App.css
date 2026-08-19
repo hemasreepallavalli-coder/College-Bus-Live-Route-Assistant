@@ -222,6 +222,8 @@ body {
 
 .driver-button:hover {
   opacity: 0.85;
+<<<<<<< HEAD
+=======
 * {
   box-sizing: border-box;
 }
@@ -1045,4 +1047,5 @@ button {
 
 .sidebar-nav-button:hover svg {
   color: #ffffff;
+>>>>>>> origin/main
 }

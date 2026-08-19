@@ -93,6 +93,8 @@ function Driver() {
   return (
     <div className="driver-page">
 
+<<<<<<< HEAD
+=======
 return (
     <div className="driver-page">
 
@@ -119,6 +121,7 @@ return (
   ← Back to Home
 </button>
 
+>>>>>>> origin/main
       {/* HEADER */}
       <header className="driver-header">
         <div className="brand">
