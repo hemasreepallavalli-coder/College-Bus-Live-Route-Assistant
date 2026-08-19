@@ -93,6 +93,32 @@ function Driver() {
   return (
     <div className="driver-page">
 
+return (
+    <div className="driver-page">
+
+     {/* BACK TO HOME */}
+<button
+  onClick={() => {
+    window.location.href = "/";
+  }}
+  style={{
+    display: "block",
+    margin: "20px 40px",
+    padding: "10px 18px",
+    background: "#1e3a8a",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "15px",
+    fontWeight: "600",
+    cursor: "pointer",
+    position: "relative",
+    zIndex: 9999,
+  }}
+>
+  ← Back to Home
+</button>
+
       {/* HEADER */}
       <header className="driver-header">
         <div className="brand">

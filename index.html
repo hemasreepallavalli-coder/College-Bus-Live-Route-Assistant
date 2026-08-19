@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>College Bus Live</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>🚌 College Bus Live</h1>
+        <p>Live Route Assistant</p>
+    </header>
+
+
+    <!-- Driver Dashboard -->
+    <section class="dashboard">
+
+        <h2>🚌 Driver Dashboard</h2>
+
+        <div class="card">
+
+            <h3>College Bus - BUS 01</h3>
+
+            <p>
+                Driver Status:
+                <strong id="driverStatus">Offline</strong>
+            </p>
+
+            <p>
+                Trip Status:
+                <strong id="tripStatus">Not Started</strong>
+            </p>
+
+            <p>
+                📍 Location:
+                <strong id="location">Not Available</strong>
+            </p>
+
+            <div class="buttons">
+                <button id="startBtn" onclick="startTrip()">
+                    ▶ Start Trip
+                </button>
+
+                <button id="endBtn" onclick="endTrip()" disabled>
+                    ■ End Trip
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- Student View -->
+    <section class="student-section">
+
+        <h2>🎓 Student View</h2>
+
+        <div class="student-card">
+
+            <h3>🚌 BUS 01 - Live Status</h3>
+
+            <p>
+                Status:
+                <strong id="studentStatus">Bus is Offline</strong>
+            </p>
+
+            <p>
+                📍 Current Location:
+                <strong id="studentLocation">Not Available</strong>
+            </p>
+
+            <p>
+                🚏 Next Stop:
+                <strong id="nextStop">Not Available</strong>
+            </p>
+
+            <p>
+                ⏱️ Estimated Arrival:
+                <strong id="arrival">Not Available</strong>
+            </p>
+
+            <p>
+                🗺️ Route:
+                <strong>SVCE College → Tirupati</strong>
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- Bus Route -->
+    <section class="route-section">
+
+        <h2>📍 Bus Route</h2>
+
+        <div class="route">
+
+            <div>SVCE College</div>
+            <div>Karakambadi</div>
+            <div>Renigunta Road</div>
+            <div>Alipiri</div>
+            <div>Tirupati</div>
+
+        </div>
+
+    </section>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

@@ -551,3 +551,33 @@
     flex-direction: column;
   }
 }
+.back-home-driver {
+  margin: 20px 0 0 20px;
+  padding: 10px 18px;
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-home-driver:hover {
+  background: #163275;
+}
+.back-home-driver {
+  margin: 20px 40px 0;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #1e3a8a;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-home-driver:hover {
+  background: #172554;
+}

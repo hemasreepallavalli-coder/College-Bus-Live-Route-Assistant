@@ -1,0 +1,206 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f6fb;
+    color: #222;
+}
+
+
+/* Header */
+
+header {
+    background: #23438f;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 21px;
+}
+
+
+/* Dashboard */
+
+.dashboard {
+    width: 900px;
+    max-width: 90%;
+    margin: 55px auto 0;
+}
+
+.dashboard h2,
+.student-section h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 25px;
+}
+
+
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+}
+
+.card h3 {
+    color: #23438f;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.card p {
+    font-size: 21px;
+    margin: 18px 0;
+}
+
+
+/* Buttons */
+
+.buttons {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+}
+
+button {
+    border: none;
+    padding: 16px 28px;
+    border-radius: 8px;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+}
+
+#startBtn {
+    background: #16a34a;
+}
+
+#startBtn:hover {
+    background: #12813b;
+}
+
+#startBtn:disabled {
+    background: #8bd3a7;
+    cursor: not-allowed;
+}
+
+#endBtn {
+    background: #e52525;
+}
+
+#endBtn:hover {
+    background: #c91d1d;
+}
+
+#endBtn:disabled {
+    background: #f3a0a0;
+    cursor: not-allowed;
+}
+
+
+/* Student View */
+
+.student-section {
+    width: 900px;
+    max-width: 90%;
+    margin: 55px auto;
+}
+
+.student-card {
+    background: white;
+    border-left: 6px solid #2864e8;
+    padding: 40px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+}
+
+.student-card h3 {
+    color: #23438f;
+    font-size: 29px;
+    margin-bottom: 25px;
+}
+
+.student-card p {
+    font-size: 20px;
+    margin: 20px 0;
+}
+
+#studentStatus {
+    color: #2864e8;
+}
+
+#studentLocation {
+    color: #16a34a;
+}
+
+#nextStop {
+    color: #d97706;
+}
+
+#arrival {
+    color: #7c3aed;
+}
+
+
+/* Route */
+
+.route-section {
+    width: 900px;
+    max-width: 90%;
+    margin: 0 auto 60px;
+    background: #eef3f9;
+    padding: 35px;
+    border-radius: 20px;
+}
+
+.route-section h2 {
+    color: #23438f;
+    font-size: 30px;
+    margin-bottom: 25px;
+}
+
+.route div {
+    background: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-left: 4px solid #23438f;
+    font-size: 20px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    header p {
+        font-size: 17px;
+    }
+
+    .card,
+    .student-card {
+        padding: 25px;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}
