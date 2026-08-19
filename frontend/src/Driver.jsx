@@ -90,6 +90,9 @@ function Driver() {
     console.log("GPS tracking stopped");
   };
 
+  return (
+    <div className="driver-page">
+
 return (
     <div className="driver-page">
 

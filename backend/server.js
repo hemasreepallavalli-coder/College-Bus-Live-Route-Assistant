@@ -1,199 +1,103 @@
-const dns = require("dns");
-
-// Use reliable DNS servers for MongoDB SRV connection
-dns.setServers(["8.8.8.8", "1.1.1.1"]);
-
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
+ const express = require("express");
 const http = require("http");
+const cors = require("cors");
 const { Server } = require("socket.io");
-
-const busRoutes = require("./routes/busRoutes");
-const routeRoutes = require("./routes/routeRoutes");
-const stopRoutes = require("./routes/stopRoutes");
-
-require("dotenv").config();
 
 const app = express();
 
-// =========================
-// MIDDLEWARE
-// =========================
-
-app.use(
-  cors({
-    origin: [
-     
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5500",
-      "http://127.0.0.1:5500"
-    
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
-
+app.use(cors());
 app.use(express.json());
-
-// =========================
-// HTTP SERVER
-// =========================
 
 const server = http.createServer(app);
 
-// =========================
-// SOCKET.IO
-// =========================
-
 const io = new Server(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "http://localhost:5500",
-      "http://127.0.0.1:5500"
-    ],
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
-// Make Socket.IO available inside routes
-app.set("io", io);
-
-// =========================
-// SOCKET CONNECTION
-// =========================
+let latestBusLocation = null;
 
 io.on("connection", (socket) => {
-  console.log("Socket connected:", socket.id);
+  console.log("Client connected:", socket.id);
 
-  // Driver joins a bus room
-  socket.on("join-bus", (busId) => {
-    if (!busId) return;
+  if (latestBusLocation) {
+    socket.emit("bus-location", latestBusLocation);
+  }
 
-    socket.join(`bus-${busId}`);
+  socket.on("bus-location", (location) => {
+    latestBusLocation = location;
 
-    console.log(
-      `Socket ${socket.id} joined bus-${busId}`
-    );
+    console.log("Bus location received:", location);
+
+    io.emit("bus-location", location);
   });
 
-  // Driver sends live GPS location
-  socket.on("driver-location", (data) => {
-    console.log("Driver location received:", data);
-
-    /*
-      Expected data:
-
-      {
-        busId: "...",
-        latitude: 17.3850,
-        longitude: 78.4867
-      }
-    */
-
-    if (!data || !data.busId) return;
-
-    // Send location to users watching this bus
-    io.to(`bus-${data.busId}`).emit(
-      "bus-location-update",
-      data
-    );
-  });
-// Sahithi Live Tracking
-socket.on("bus-location", (data) => {
-  console.log("Sahithi location received:", data);
-
-  if (!data) return;
-
-  const locationData = {
-    ...data,
-    busId: data.busId || "BUS 01",
-  };
-
-  io.emit("bus-location", locationData);
-
-  io.to(`bus-${locationData.busId}`).emit(
-    "bus-location-update",
-    locationData
-  );
-});
-
-  // Driver starts a trip
-  socket.on("trip-start", (data) => {
-    console.log("Trip started:", data);
-
-    if (!data || !data.busId) return;
-
-    io.to(`bus-${data.busId}`).emit(
-      "trip-started",
-      data
-    );
-  });
-
-  // Driver stops/ends a trip
-  socket.on("trip-stop", (data) => {
-    console.log("Trip stopped:", data);
-
-    if (!data || !data.busId) return;
-
-    io.to(`bus-${data.busId}`).emit(
-      "trip-stopped",
-      data
-    );
-  });
-
-  // Disconnect
   socket.on("disconnect", () => {
-    console.log("Socket disconnected:", socket.id);
+    console.log("Client disconnected:", socket.id);
   });
 });
 
-// =========================
-// API ROUTES
-// =========================
 
-app.use("/api/buses", busRoutes);
-app.use("/api/routes", routeRoutes);
-app.use("/api/stops", stopRoutes);
-
-// =========================
-// TEST ROUTE
-// =========================
-
+/* Current bus location */
 app.get("/", (req, res) => {
   res.json({
-    message: "College Bus Admin Backend is running!",
-    socket: "Socket.IO enabled",
+    status: "College Bus Live Tracking Server",
+    busLocation: latestBusLocation,
   });
 });
 
-// =========================
-// MONGODB CONNECTION
-// =========================
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected successfully");
+/* Road-based ETA */
+app.get("/api/eta", async (req, res) => {
+  try {
+    const { fromLat, fromLng, toLat, toLng } = req.query;
 
-    const PORT = process.env.PORT || 5000;
+    if (!fromLat || !fromLng || !toLat || !toLng) {
+      return res.status(400).json({
+        error: "Latitude and longitude are required",
+      });
+    }
 
-    server.listen(PORT, () => {
-      console.log(
-        `Server running on http://localhost:${PORT}`
-      );
+    const url =
+      `https://router.project-osrm.org/route/v1/driving/` +
+      `${fromLng},${fromLat};${toLng},${toLat}` +
+      `?overview=false`;
 
-      console.log(
-        "Socket.IO server is running successfully"
-      );
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Routing service unavailable");
+    }
+
+    const data = await response.json();
+
+    if (!data.routes || data.routes.length === 0) {
+      return res.status(404).json({
+        error: "Route not found",
+      });
+    }
+
+    const route = data.routes[0];
+
+    res.json({
+      distanceKm: (route.distance / 1000).toFixed(2),
+      durationMinutes: Math.ceil(route.duration / 60),
     });
-  })
-  .catch((error) => {
-    console.error(
-      "MongoDB connection failed:",
-      error.message
-    );
-  });
+
+  } catch (error) {
+    console.error("ETA error:", error.message);
+
+    res.status(500).json({
+      error: "Unable to calculate ETA",
+    });
+  }
+});
+
+
+const PORT = 5000;
+
+server.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
