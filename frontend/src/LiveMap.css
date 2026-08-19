@@ -1,0 +1,307 @@
+ .live-map-page {
+  min-height: 100vh;
+  background: #f5f7fb;
+  padding: 32px 5%;
+}
+
+.map-header {
+  max-width: 1200px;
+  margin: 0 auto 24px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.map-label {
+  margin: 0 0 6px;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+
+  color: #2563eb;
+}
+
+.map-header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.map-header p:last-child {
+  margin: 6px 0 0;
+  color: #6b7280;
+}
+
+.server-online,
+.server-offline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.server-online {
+  background: #e8f8ef;
+  color: #16834e;
+}
+
+.server-offline {
+  background: #fff0f1;
+  color: #c7384b;
+}
+
+.server-online span,
+.server-offline span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.server-online span {
+  background: #20b26b;
+}
+
+.server-offline span {
+  background: #d94d5e;
+}
+
+.map-card {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+
+  box-shadow: 0 10px 30px rgba(23, 32, 51, 0.08);
+}
+
+.live-map {
+  width: 100%;
+  height: 520px;
+  border-radius: 16px;
+}
+
+.bus-marker {
+  background: transparent !important;
+  border: none !important;
+  font-size: 32px;
+}
+
+.location-info {
+  max-width: 1200px;
+  margin: 0 auto 20px;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.location-info > div {
+  background: white;
+  border-radius: 15px;
+  padding: 18px;
+
+  box-shadow: 0 6px 22px rgba(23, 32, 51, 0.05);
+}
+
+.location-info span {
+  display: block;
+  margin-bottom: 7px;
+
+  color: #8a93a2;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.location-info strong {
+  display: block;
+  font-size: 16px;
+  color: #172033;
+}
+
+
+/* ROUTE PROGRESS */
+
+.route-progress-card {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  background: white;
+  border-radius: 20px;
+  padding: 28px;
+
+  box-shadow: 0 8px 25px rgba(23, 32, 51, 0.06);
+}
+
+.route-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.route-progress-header h2 {
+  margin: 0;
+
+  font-size: 22px;
+  color: #172033;
+}
+
+.progress-count {
+  padding: 9px 13px;
+
+  border-radius: 20px;
+
+  background: #eef4ff;
+  color: #2563eb;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.progress-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.route-stop-item {
+  position: relative;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+
+  min-height: 70px;
+}
+
+.route-stop-item:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  left: 16px;
+  top: 34px;
+
+  width: 2px;
+  height: 55px;
+
+  background: #dce2ea;
+}
+
+.route-stop-item.completed:not(:last-child)::after {
+  background: #22c55e;
+}
+
+.route-stop-item.current:not(:last-child)::after {
+  background: #93c5fd;
+}
+
+.route-node {
+  position: relative;
+  z-index: 2;
+
+  width: 33px;
+  height: 33px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #e9eef5;
+  color: #6b7280;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.route-stop-item.completed .route-node {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.route-stop-item.current .route-node {
+  background: #2563eb;
+  color: white;
+
+  box-shadow: 0 0 0 6px #eaf1ff;
+}
+
+.route-stop-content {
+  padding-top: 2px;
+}
+
+.route-stop-content strong,
+.route-stop-content small {
+  display: block;
+}
+
+.route-stop-content strong {
+  font-size: 15px;
+  color: #172033;
+}
+
+.route-stop-content small {
+  margin-top: 4px;
+
+  font-size: 11px;
+  color: #8a93a2;
+}
+
+.route-stop-item.current .route-stop-content strong {
+  color: #2563eb;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+  .location-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .live-map-page {
+    padding: 20px 4%;
+  }
+
+  .map-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .map-header h1 {
+    font-size: 24px;
+  }
+
+  .live-map {
+    height: 420px;
+  }
+
+  .location-info {
+    grid-template-columns: 1fr;
+  }
+
+  .route-progress-card {
+    padding: 20px;
+  }
+
+  .route-progress-header {
+    align-items: flex-start;
+    gap: 15px;
+  }
+}

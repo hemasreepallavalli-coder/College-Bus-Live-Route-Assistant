@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Stop Delete Test</title>
+</head>
+<body>
+
+  <h2>Delete Bus Stop</h2>
+
+  <button onclick="deleteStop()">Delete Main Gate Stop</button>
+
+  <script>
+    async function deleteStop() {
+
+      const stopId = "6a81b800841204897815a8fb";
+    
+
+      const response = await fetch(
+        `http://localhost:5000/api/stops/${stopId}`,
+        {
+          method: "DELETE"
+        }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+      alert(data.message);
+    }
+  </script>
+
+</body>
+</html>
