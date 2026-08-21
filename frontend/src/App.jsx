@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import "./App.css";
 
-const API = "https://college-bus-live-route-assistant.onrender.com/api";
+const API = "https://college-bus-live-route-assistant-updated.onrender.com/api";
 
 
 function AdminDashboard() {

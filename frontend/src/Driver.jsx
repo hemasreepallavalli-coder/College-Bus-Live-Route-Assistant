@@ -2,7 +2,7 @@
 import { io } from "socket.io-client";
 import "./Driver.css";
 
-const socket = io("https://college-bus-live-route-assistant.onrender.com", {
+const socket = io("https://college-bus-live-route-assistant-updated.onrender.com", {
   transports: ["websocket", "polling"],
 });
 
