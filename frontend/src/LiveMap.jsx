@@ -12,7 +12,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./LiveMap.css";
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://college-bus-live-route-assistant.onrender.com", {
   transports: ["websocket", "polling"],
 });
 
@@ -86,12 +86,12 @@ async function getRealEta(
   toLng
 ) {
   try {
-    const url =
-      `http://localhost:5000/api/eta` +
-      `?fromLat=${fromLat}` +
-      `&fromLng=${fromLng}` +
-      `&toLat=${toLat}` +
-      `&toLng=${toLng}`;
+  const url =
+  `https://college-bus-live-route-assistant.onrender.com/api/eta` +
+  `?fromLat=${fromLat}` +
+  `&fromLng=${fromLng}` +
+  `&toLat=${toLat}` +
+  `&toLng=${toLng}`;
 
     const response = await fetch(url);
 

@@ -1,5 +1,8 @@
 
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Driver from "./Driver";
+import LiveMap from "./LiveMap";
 import {
   Bus,
   Map,
@@ -9,13 +12,12 @@ import {
   Edit,
   RefreshCw,
 } from "lucide-react";
-import { io } from "socket.io-client";
 import "./App.css";
 
-const API = "http://localhost:5000/api";
-const SOCKET_URL = "http://localhost:5000";
+const API = "https://college-bus-live-route-assistant.onrender.com/api";
 
-function App() {
+
+function AdminDashboard() {
  
   const [activeTab, setActiveTab] = useState("buses");
   const [showForm, setShowForm] = useState(false);
@@ -25,19 +27,7 @@ function App() {
   const [routes, setRoutes] = useState([]);
   const [stops, setStops] = useState([]);
 
-  // =========================
-  // LIVE BUS STATE
-  // =========================
-
-  const [liveBus, setLiveBus] = useState({
-    busId: "BUS 01",
-    location: "Waiting for driver...",
-    latitude: null,
-    longitude: null,
-    tripStatus: "Waiting",
-  });
-
-  const [socketConnected, setSocketConnected] = useState(false);
+  
 
   const [busForm, setBusForm] = useState({
     busNumber: "",
@@ -100,94 +90,7 @@ function App() {
     loadData();
   }, []);
 
-  // =========================
-  // SOCKET.IO LIVE TRACKING
-  // =========================
 
-  useEffect(() => {
-    const socket = io(SOCKET_URL);
-
-    socket.on("connect", () => {
-      console.log("Admin Socket connected:", socket.id);
-      setSocketConnected(true);
-
-      // Join BUS 01 room
-      socket.emit("join-bus", "BUS 01");
-
-      console.log("Admin joined bus-BUS 01");
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Admin Socket disconnected");
-      setSocketConnected(false);
-    });
-
-    // Driver sends live location
-    socket.on("bus-location-update", (data) => {
-      console.log("LIVE BUS LOCATION:", data);
-
-      if (!data || data.busId !== "BUS 01") {
-        return;
-      }
-
-      setLiveBus((previous) => ({
-        ...previous,
-        busId: data.busId,
-        location:
-          data.location ||
-          data.currentLocation ||
-          "Location unavailable",
-        latitude: data.latitude ?? previous.latitude,
-        longitude: data.longitude ?? previous.longitude,
-      }));
-    });
-
-    // Driver starts trip
-    socket.on("trip-started", (data) => {
-      console.log("TRIP STARTED:", data);
-
-      if (!data || data.busId !== "BUS 01") {
-        return;
-      }
-
-      setLiveBus((previous) => ({
-        ...previous,
-        busId: data.busId,
-        tripStatus: "Trip Started",
-        location:
-          data.location ||
-          data.currentLocation ||
-          previous.location,
-        latitude: data.latitude ?? previous.latitude,
-        longitude: data.longitude ?? previous.longitude,
-      }));
-    });
-
-    // Driver stops trip
-    socket.on("trip-stopped", (data) => {
-      console.log("TRIP STOPPED:", data);
-
-      if (!data || data.busId !== "BUS 01") {
-        return;
-      }
-
-      setLiveBus((previous) => ({
-        ...previous,
-        busId: data.busId,
-        tripStatus: "Trip Completed",
-        location:
-          data.location ||
-          data.currentLocation ||
-          previous.location,
-        latitude: data.latitude ?? previous.latitude,
-        longitude: data.longitude ?? previous.longitude,
-      }));
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   // =========================
   // CLOSE FORM
@@ -646,10 +549,10 @@ function App() {
           </button>
         </nav>
         
-        <button
+   <button
   className="sidebar-nav-button"
   onClick={() => {
-    window.location.href = "http://localhost:5175/";
+    window.location.href = "/live-tracking";
   }}
 >
   <Map size={20} />
@@ -744,141 +647,7 @@ function App() {
 
         </section>
 
-        {/* ================= LIVE BUS ================= */}
 
-        <section
-          style={{
-            marginBottom: "24px",
-            padding: "20px",
-            borderRadius: "12px",
-            background: "#ffffff",
-            boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
-          >
-            <div>
-            <h2 style={{ margin: 0, color: "#111827" }}>
-  BUS 01 - Live Tracking
-</h2>
-
-              <p style={{ margin: "6px 0 0" }}>
-                Real-time driver location
-              </p>
-            </div>
-
-            <span
-              style={{
-                padding: "6px 12px",
-                borderRadius: "20px",
-                fontSize: "13px",
-                fontWeight: "600",
-                background: socketConnected
-                  ? "#dcfce7"
-                  : "#fee2e2",
-                color: socketConnected
-                  ? "#166534"
-                  : "#991b1b",
-              }}
-            >
-              {socketConnected
-                ? "● Live Connected"
-                : "● Disconnected"}
-            </span>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: "14px",
-            }}
-          >
-
-            <div
-              style={{
-                padding: "15px",
-                borderRadius: "10px",
-                background: "#f8fafc",
-              }}
-            >
-              <small>Bus ID</small>
-              <strong
-                style={{
-                  display: "block",
-                  marginTop: "5px",
-                }}
-              >
-                {liveBus.busId}
-              </strong>
-            </div>
-
-            <div
-              style={{
-                padding: "15px",
-                borderRadius: "10px",
-                background: "#f8fafc",
-              }}
-            >
-              <small>Trip Status</small>
-              <strong
-                style={{
-                  display: "block",
-                  marginTop: "5px",
-                }}
-              >
-                {liveBus.tripStatus}
-              </strong>
-            </div>
-
-            <div
-              style={{
-                padding: "15px",
-                borderRadius: "10px",
-                background: "#f8fafc",
-              }}
-            >
-              <small>Current Location</small>
-              <strong
-                style={{
-                  display: "block",
-                  marginTop: "5px",
-                }}
-              >
-                {liveBus.location}
-              </strong>
-            </div>
-
-            <div
-              style={{
-                padding: "15px",
-                borderRadius: "10px",
-                background: "#f8fafc",
-              }}
-            >
-              <small>Coordinates</small>
-              <strong
-                style={{
-                  display: "block",
-                  marginTop: "5px",
-                }}
-              >
-                {liveBus.latitude !== null &&
-                liveBus.longitude !== null
-                  ? `${liveBus.latitude}, ${liveBus.longitude}`
-                  : "Waiting..."}
-              </strong>
-            </div>
-
-          </div>
-        </section>
 
         {/* ================= CONTENT ================= */}
 
@@ -1568,6 +1337,97 @@ function App() {
       </main>
 
     </div>
+  );
+}
+function StudentPage() {
+  return (
+    <div className="app">
+
+      <button
+        onClick={() => {
+          window.location.href = "/admin";
+        }}
+        style={{
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          zIndex: 9999,
+          padding: "10px 18px",
+          background: "#1e3a8a",
+          color: "white",
+          border: "none",
+          borderRadius: "8px",
+          fontSize: "14px",
+          fontWeight: "600",
+          cursor: "pointer",
+        }}
+      >
+        ← Back to Admin
+      </button>
+
+      <header className="topbar">
+        <div>
+          <h1>🚌 College Bus Live</h1>
+          <p>Real-Time Bus Tracking</p>
+        </div>
+
+        <div className="header-actions">
+          <div className="live-status">
+            <span className="status-dot"></span>
+            LIVE
+          </div>
+
+          <Link
+            to="/driver"
+            className="driver-button"
+          >
+            Driver Tracking
+          </Link>
+        </div>
+      </header>
+
+      <main className="dashboard">
+        <section className="tracking-card">
+
+          <div className="card-header">
+            <div>
+              <h2>Bus 01</h2>
+              <p>SVCE College Route</p>
+            </div>
+
+            <span className="active-badge">
+              ● Active
+            </span>
+          </div>
+
+          <LiveMap />
+
+        </section>
+      </main>
+
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* Admin Dashboard */}
+        <Route path="/admin" element={<AdminDashboard />} />
+
+        {/* Driver */}
+        <Route path="/driver" element={<Driver />} />
+
+        {/* Live Tracking */}
+       <Route
+  path="/live-tracking"
+  element={<StudentPage />}
+/>
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 
