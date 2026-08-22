@@ -1414,8 +1414,11 @@ function App() {
     <BrowserRouter>
 <Routes>
 
-  {/* Home → Live Tracking */}
+  {/* Home - Live Tracking */}
   <Route path="/" element={<StudentPage />} />
+
+  {/* Harshitha Home */}
+  <Route path="/harshitha" element={<StudentPage />} />
 
   {/* Admin Dashboard */}
   <Route path="/admin" element={<AdminDashboard />} />
