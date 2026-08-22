@@ -1412,21 +1412,21 @@ function StudentPage() {
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
+<Routes>
 
-        {/* Admin Dashboard */}
-        <Route path="/admin" element={<AdminDashboard />} />
+  {/* Home → Live Tracking */}
+  <Route path="/" element={<StudentPage />} />
 
-        {/* Driver */}
-        <Route path="/driver" element={<Driver />} />
+  {/* Admin Dashboard */}
+  <Route path="/admin" element={<AdminDashboard />} />
 
-        {/* Live Tracking */}
-       <Route
-  path="/live-tracking"
-  element={<StudentPage />}
-/>
+  {/* Driver */}
+  <Route path="/driver" element={<Driver />} />
 
-      </Routes>
+  {/* Live Tracking */}
+  <Route path="/live-tracking" element={<StudentPage />} />
+
+</Routes>
     </BrowserRouter>
   );
 }
