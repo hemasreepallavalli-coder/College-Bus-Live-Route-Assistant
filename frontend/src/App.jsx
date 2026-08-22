@@ -1,6 +1,12 @@
 
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import Driver from "./Driver";
 import LiveMap from "./LiveMap";
 import {
@@ -562,7 +568,7 @@ function AdminDashboard() {
 <button
   className="sidebar-nav-button"
   onClick={() => {
-    window.location.href = "/hema/";
+    window.location.href = "/hema";
   }}
 >
   <Bus size={20} />
@@ -577,10 +583,10 @@ function AdminDashboard() {
         {/* ================= TOP HEADER ================= */}
 
         <header className="header">
-          <button
+ <button
   className="back-home"
   onClick={() => {
-    window.location.href = "/harshitha/";
+ window.location.href = "/harshitha/";
   }}
 >
   ← Back to Home
@@ -1412,24 +1418,24 @@ function StudentPage() {
 function App() {
   return (
     <BrowserRouter>
-<Routes>
+      <Routes>
 
-  {/* Home - Live Tracking */}
-  <Route path="/" element={<StudentPage />} />
+        {/* Home */}
+      <Route
+  path="/"
+  element={<Navigate to="/harshitha/" replace />}
+/>
 
-  {/* Harshitha Home */}
-  <Route path="/harshitha" element={<StudentPage />} />
+        {/* Admin Dashboard */}
+        <Route path="/admin" element={<AdminDashboard />} />
 
-  {/* Admin Dashboard */}
-  <Route path="/admin" element={<AdminDashboard />} />
+        {/* Driver Dashboard */}
+        <Route path="/driver" element={<hema />} />
 
-  {/* Driver */}
-  <Route path="/driver" element={<Driver />} />
+        {/* Live Tracking */}
+        <Route path="/live-tracking" element={<StudentPage />} />
 
-  {/* Live Tracking */}
-  <Route path="/live-tracking" element={<StudentPage />} />
-
-</Routes>
+      </Routes>
     </BrowserRouter>
   );
 }
