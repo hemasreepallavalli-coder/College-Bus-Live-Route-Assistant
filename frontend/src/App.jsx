@@ -568,7 +568,7 @@ function AdminDashboard() {
 <button
   className="sidebar-nav-button"
   onClick={() => {
-    window.location.href = "/hema";
+    window.location.href = "/hema/";
   }}
 >
   <Bus size={20} />
@@ -1430,7 +1430,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
 
         {/* Driver Dashboard */}
-        <Route path="/driver" element={<hema />} />
+        <Route path="/driver" element={<Driver/>} />
 
         {/* Live Tracking */}
         <Route path="/live-tracking" element={<StudentPage />} />
